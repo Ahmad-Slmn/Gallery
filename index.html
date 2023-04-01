@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
- <head>
+
+<head>
     <meta charset="UTF-8" />
     <meta name="discription" content="js" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -9,35 +10,59 @@
 </head>
 
 <body>
-    <div class="full-img" id="full-img-box">
-        <img src="images/img2.jpg" id="full-img">
-        <span onclick="closeImg()">x</span>
-    </div>
     <div class="img-gallery">
-        <img src="images/img8.jpg" onclick="zoom(this.src)">
-        <img src="images/img7.jpg" onclick="zoom(this.src)">
-        <img src="images/img6.jpg" onclick="zoom(this.src)">
-        <img src="images/img5.jpg" onclick="zoom(this.src)">
-        <img src="images/img4.jpg" onclick="zoom(this.src)">
-        <img src="images/img3.jpg" onclick="zoom(this.src)">
-        <img src="images/img2.jpg" onclick="zoom(this.src)">
-        <img src="images/img1.jpg" onclick="zoom(this.src)">
+        <img src="images/img8.jpg">
+        <img src="images/img7.jpg">
+        <img src="images/img6.jpg">
+        <img src="images/img5.jpg">
+        <img src="images/img4.jpg">
+        <img src="images/img3.jpg">
+        <img src="images/img2.jpg">
+        <img src="images/img1.jpg">
     </div>
     <script>
-        let full_img_box = document.getElementById("full-img-box");
-        let full_img = document.getElementById("full-img")
+        const images = document.querySelectorAll('.img-gallery img');
 
-        function closeImg() {
+        images.forEach(image => {
+            image.addEventListener('click', () => {
+                const overlay = document.createElement('div');
+                overlay.classList.add('overlay');
+                document.body.appendChild(overlay);
+                const closeImg = document.createElement('span');
+                closeImg.textContent = "x";
+                overlay.appendChild(closeImg);
 
-            full_img_box.style.display = "none"
-        }
+                const img = document.createElement('img');
+                img.src = image.src;
+                img.classList.add('enlarged');
 
-        function zoom(imgSelected) {
+                const downloadLink = document.createElement('a');
+                downloadLink.href = image.src;
+                downloadLink.download = image.alt;
+                downloadLink.textContent = 'Download';
 
-            full_img_box.style.display = "flex";
+                const imageContainer = document.createElement('div');
+                imageContainer.classList.add('image-container');
+                overlay.appendChild(imageContainer);
+                imageContainer.appendChild(img);
+                imageContainer.appendChild(downloadLink);
 
-            full_img.src = imgSelected;
+                setTimeout(() => {
+                    overlay.classList.add('active');
+                    imageContainer.classList.add('active');
+                }, 0);
 
-        }
+                closeImg.addEventListener('click', () => {
+                    overlay.classList.remove('active');
+                    imageContainer.classList.remove('active');
+                    setTimeout(() => {
+                        overlay.remove();
+                    }, 400);
+                });
+            });
+        });
+
     </script>
-</body></html>
+</body>
+
+</html>
